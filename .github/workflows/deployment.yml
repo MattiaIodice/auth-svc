@@ -8,7 +8,7 @@ on:
 
 jobs:
   build:
-    name: Build - Maven clean install
+    name: Build
     runs-on: ubuntu-latest
     
     steps:
@@ -17,12 +17,14 @@ jobs:
       with:
         distribution: 'adopt-hotspot'
         java-version: '11'
-    - name: Maven - Build
-      run: mvn clean install
+    - name: Maven - Build svc
+      run: mvn clean install -Dskip.tests
+    - name: Maven - Test svc
+      run: mvn test
     - name: Docker - Login to Docker Hub
       run: docker login -u ${{ secrets.DOCKER_USER }} 
              -p ${{ secrets.DOCKER_PASS }}
     - name: Docker - Build image
-      run: docker build -t $REPO:latest -t $REPO:${GITHUB_SHA::8} build
+      run: docker build -t $REPO:latest 'build'
     - name: Docker - Push image
       run: docker push $REPO
