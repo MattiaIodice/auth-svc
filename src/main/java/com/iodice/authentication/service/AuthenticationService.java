@@ -30,10 +30,15 @@ public class AuthenticationService {
     private final AuthenticationRepository authenticationRepository;
 
     /**
-     * Register: Check if an account exists, encrypt plain password, and save account into DB.
+     * Build an AccountDto performing the 'Register' steps:
+     * <ul>
+     *     <li>Check if an account does not exist for 'username'</li>
+     *     <li>Encrypt 'plainPassword'</li>
+     *     <li>Build and save account into DB</li>
+     * </ul>
      *
-     * @param authenticationRequestDto Dto with username and plain password
-     * @return The new user account with username created
+     * @param authenticationRequestDto Dto with 'username' and 'plainPassword'
+     * @return New user account
      */
     public AccountDto register(final AuthenticationRequestDto authenticationRequestDto) throws CustomAuthenticationException {
         final String username = authenticationRequestDto.getUsername();
@@ -41,6 +46,7 @@ public class AuthenticationService {
 
         if (authenticationRepository.existsByUsername(username))
             throw new RegisterExceptionCustom("An account with username [" + username + "] already exists.");
+        log.debug("Register - Checked that the account for username [{}] does not exist yet", username);
 
         final String encryptedPassword = passwordEncoder.encode(plainPassword);
         final AccountDocument newAccountDocument = this.saveAccount(username, encryptedPassword);
@@ -49,17 +55,24 @@ public class AuthenticationService {
     }
 
     /**
-     * Login: Authenticate (who you are) and generate JWT (for next system APIs).
-     *
-     * @param authenticationRequestDto Username and plainPassword into a Dto
-     * @return The result login object
+     * Get an AccountDto performing the 'Login' steps:
+     * <ul>
+     *     <li>Authentication (by Spring "AuthenticationManager")</li>
+     *     <ul>
+     *         <li>Check if an account exist for 'username'</li>
+     *         <li>Perform 'hashing comparison' between encoded 'plainPassword' hash and stored one</li>
+     *     </ul>
+     *     <li>JWT Generation</li>
+     * </ul>
+     * @param authenticationRequestDto Dto with 'username' and 'plainPassword'
+     * @return Account with JWT
      */
     public AccountDto login(final AuthenticationRequestDto authenticationRequestDto) {
         final String username = authenticationRequestDto.getUsername();
         final String plainPassword = authenticationRequestDto.getPlainPassword();
 
         authenticationManagerService.authenticate(new UsernamePasswordAuthenticationToken(username, plainPassword));
-        log.debug("Login - The authentication (with \"AuthenticationManager\") for username [{}] has been performed successfully", username);
+        log.debug("Login - The authentication by \"AuthenticationManager\" for username [{}] has been performed successfully", username);
         final String token = jwtUtilService.generateToken(username);
         log.debug("Login - The JWT generation for username [{}] has been performed successfully", username);
 

@@ -5,6 +5,7 @@ import com.iodice.authentication.repository.AuthenticationRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -21,6 +22,7 @@ import java.util.Collections;
 @Service
 @Slf4j
 @RequiredArgsConstructor(onConstructor = @__(@Autowired))
+@Profile("!test")
 public class AuthUserDetailsService implements UserDetailsService {
     private final AuthenticationRepository authenticationRepository;
 
@@ -32,13 +34,10 @@ public class AuthUserDetailsService implements UserDetailsService {
      */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        log.debug("Prima loadUserByUsername");
         final AccountDocument account = authenticationRepository
                 .findByUsername(username)
-                .orElseThrow(() -> new UsernameNotFoundException("Account not found with username: " + username));
-        User prova = new User(username, account.getPassword(), Collections.emptyList());
-        log.debug("Dopo loadUserByUsername: {}", prova);
+                .orElseThrow(() -> new UsernameNotFoundException("Account not found for username: " + username));
 
-        return prova;
+        return new User(username, account.getPassword(), Collections.emptyList());
     }
 }
