@@ -13,14 +13,19 @@
 
 	<!-- Specific about the microservice -->
 	<groupId>com.iodice</groupId>
-	<artifactId>authentication</artifactId>
+	<artifactId>auth-svc</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
-	<name>authentication</name>
-	<description>Ubisoft Berlin Backend Programmer Test - Authentication - Mattia Iodice</description>
+	<name>auth-svc</name>
+	<description>Authentication and authorization service</description>
 
 	<!-- Specific about the programming language, available on Java 8+ -->
 	<properties>
 		<java.version>1.8</java.version>
+		<sl4j.version>1.2</sl4j.version>
+		<jwt.version>0.9.1</jwt.version>
+		<maven-jar-plugin.version>2.3.1</maven-jar-plugin.version>
+		<jackson.version>2.11.1</jackson.version>
+		<javax.validation.version>2.0.1.Final</javax.validation.version>
 	</properties>
 
 	<dependencies>
@@ -54,7 +59,7 @@
 		<dependency>
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-skin</artifactId>
-			<version>1.2</version>
+			<version>${sl4j.version}</version>
 		</dependency>
 
 		<!-- Spring: Security -->
@@ -72,7 +77,21 @@
 		<dependency>
 			<groupId>io.jsonwebtoken</groupId>
 			<artifactId>jjwt</artifactId>
-			<version>0.9.1</version>
+			<version>${jwt.version}</version>
+		</dependency>
+
+		<!-- Jackson -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>${jackson.version}</version>
+		</dependency>
+
+		<!-- Javax validation -->
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+			<version>${javax.validation.version}</version>
 		</dependency>
 	</dependencies>
 
@@ -88,6 +107,21 @@
 							<artifactId>lombok</artifactId>
 						</exclude>
 					</excludes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>${maven-jar-plugin.version}</version>
+				<configuration>
+					<outputDirectory>release</outputDirectory>
+					<archive>
+						<manifest>
+							<addClasspath>true</addClasspath>
+							<classpathPrefix>lib/</classpathPrefix>
+							<mainClass>com.iodice.authentication.AuthApplication</mainClass>
+						</manifest>
+					</archive>
 				</configuration>
 			</plugin>
 		</plugins>
