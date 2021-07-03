@@ -1,6 +1,7 @@
 package com.iodice.authentication.controller;
 
-import com.iodice.authentication.exception.RegisterExceptionCustom;
+import com.iodice.authentication.exception.LoginException;
+import com.iodice.authentication.exception.RegisterException;
 import com.iodice.authentication.model.dto.AccountDto;
 import com.iodice.authentication.model.dto.AuthenticationRequestDto;
 import com.iodice.authentication.service.AuthenticationService;
@@ -34,7 +35,7 @@ public class AuthenticationController {
      */
     @PostMapping(value = "register")
     public ResponseEntity<AccountDto> register(@RequestBody final AuthenticationRequestDto authenticationRequestDto)
-            throws RegisterExceptionCustom {
+            throws RegisterException {
         final AccountDto createdAccountDto = authenticationService.register(authenticationRequestDto);
         log.debug("Register - The API with body request [{}] has been consumed successfully", authenticationRequestDto);
         return new ResponseEntity<>(createdAccountDto, HttpStatus.CREATED);
@@ -47,7 +48,8 @@ public class AuthenticationController {
      * @return The result Dto with a valid authorization token
      */
     @PostMapping(value = "login")
-    public ResponseEntity<AccountDto> login(@RequestBody final AuthenticationRequestDto authenticationRequestDto) {
+    public ResponseEntity<AccountDto> login(@RequestBody final AuthenticationRequestDto authenticationRequestDto)
+        throws LoginException {
         final AccountDto resultAccountDto = authenticationService.login(authenticationRequestDto);
         log.debug("Login - The API with body request [{}] has been consumed successfully", authenticationRequestDto);
         return new ResponseEntity<>(resultAccountDto, HttpStatus.OK);

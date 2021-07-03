@@ -10,14 +10,14 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @Slf4j
 public class CommonExceptionHandler {
 
-    @ExceptionHandler(RegisterExceptionCustom.class)
-    public ResponseEntity<?> handleRegisterException(final RegisterExceptionCustom ex) {
+    @ExceptionHandler(RegisterException.class)
+    public ResponseEntity<?> handleRegisterException(final RegisterException ex) {
         log.error("An exception occurred during register: ", ex);
         return new ResponseEntity<>(HttpStatus.CONFLICT);
     }
 
-    @ExceptionHandler(LoginExceptionCustom.class)
-    public ResponseEntity<?> handleLoginException(final LoginExceptionCustom ex) {
+    @ExceptionHandler(LoginException.class)
+    public ResponseEntity<?> handleLoginException(final LoginException ex) {
         log.error("An exception occurred during login: ", ex);
         return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }

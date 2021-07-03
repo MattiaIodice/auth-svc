@@ -7,6 +7,6 @@ import java.io.Serializable;
 @Data
 public class ConfigurationRequestDto implements Serializable {
     private final String username;
-    private String description;
-    private String preferences;
+    private final String description;
+    private final String preferences;
 }
