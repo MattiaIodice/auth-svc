@@ -7,6 +7,6 @@ services:
       - "27017:27017"
   auth-svc:
     build: .
-    container_name: auth-container
+    container_name: auth-svc-container
     ports:
       - "9090:9090"
