@@ -45,7 +45,7 @@ public class AuthenticationServiceTest {
     }
 
     @Test
-    void register_ItShouldReturnACorrectResponseWhenInputIsValid() {
+    void registerShouldReturnACorrectAccountWhenInputIsValid() {
         final AuthenticationRequestDto inputDto = new AuthenticationRequestDto("dummyUsername", "dummyPwd");
         when(passwordEncoder.encode(any())).thenReturn(encryptedPasswordMocked);
         when(authenticationRepository.existsByUsername(any())).thenReturn(false);
@@ -59,7 +59,7 @@ public class AuthenticationServiceTest {
     }
 
     @Test
-    void register_ItShouldReturnAnExceptionWhenUsernameIsEmpty() {
+    void registerShouldReturnAnExceptionWhenUsernameIsEmpty() {
         final AuthenticationRequestDto inputDto = new AuthenticationRequestDto("", "dummyPwd");
         when(passwordEncoder.encode(any())).thenReturn(encryptedPasswordMocked);
         when(authenticationRepository.existsByUsername(any())).thenReturn(false);
@@ -69,7 +69,7 @@ public class AuthenticationServiceTest {
     }
 
     @Test
-    void register_ItShouldReturnAnExceptionWhenPwdIsEmpty() {
+    void registerShouldReturnAnExceptionWhenPwdIsEmpty() {
         final AuthenticationRequestDto inputDto = new AuthenticationRequestDto("dummyUsername", "");
         when(passwordEncoder.encode(any())).thenReturn(encryptedPasswordMocked);
         when(authenticationRepository.existsByUsername(any())).thenReturn(false);
@@ -79,7 +79,7 @@ public class AuthenticationServiceTest {
     }
 
     @Test
-    void register_ItShouldReturnAnExceptionWhenAccountAlreadyExist() {
+    void registerShouldReturnAnExceptionWhenAccountAlreadyExist() {
         final AuthenticationRequestDto inputDto = new AuthenticationRequestDto("dummyUsername", "dummyPwd");
         when(passwordEncoder.encode(any())).thenReturn(encryptedPasswordMocked);
         when(authenticationRepository.existsByUsername(any())).thenReturn(true);
@@ -89,7 +89,7 @@ public class AuthenticationServiceTest {
     }
 
     @Test
-    void login_ItShouldReturnACorrectResponseWhenInputIsValid() {
+    void loginShouldReturnACorrectResponseWhenInputIsValid() {
         final AuthenticationRequestDto inputDto = new AuthenticationRequestDto("dummyUsername", "dummyPwd");
         when(authenticationManager.authenticate(any())).thenReturn(authenticate);
         final String token = "dummyToken";
@@ -103,7 +103,7 @@ public class AuthenticationServiceTest {
     }
 
     @Test
-    void login_ItShouldReturnAnExceptionWhenUsernameIsEmpty() {
+    void loginShouldReturnAnExceptionWhenUsernameIsEmpty() {
         final AuthenticationRequestDto inputDto = new AuthenticationRequestDto("", "dummyPwd");
         when(authenticationManager.authenticate(any())).thenReturn(authenticate);
         final String token = "dummyToken";
@@ -113,7 +113,7 @@ public class AuthenticationServiceTest {
     }
 
     @Test
-    void login_ItShouldReturnAnExceptionWhenPwdIsEmpty() {
+    void loginShouldReturnAnExceptionWhenPwdIsEmpty() {
         final AuthenticationRequestDto inputDto = new AuthenticationRequestDto("dummyUsername", "");
         when(authenticationManager.authenticate(any())).thenReturn(authenticate);
         final String token = "dummyToken";

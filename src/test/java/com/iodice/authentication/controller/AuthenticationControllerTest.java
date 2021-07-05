@@ -25,7 +25,7 @@ public class AuthenticationControllerTest {
     }
 
     @Test
-    void register_itShouldReturn2xxWhenInputIsValid() {
+    void registerShouldReturn2xxWhenInputIsValid() {
         final AuthenticationRequestDto inputDto = new AuthenticationRequestDto("dummyUsername", "dummyPwd");
         final AccountDto accountDto = new AccountDto("dummyUsername", "dummyToken");
         when(authenticationServiceMocked.register(any())).thenReturn(accountDto);
@@ -39,14 +39,14 @@ public class AuthenticationControllerTest {
     }
 
     @Test
-    void register_itShouldThrowAnExceptionWhenAnExceptionOccursInService() {
+    void registerShouldThrowAnExceptionWhenAnExceptionOccursInService() {
         when(authenticationServiceMocked.register(any())).thenThrow(RegisterException.class);
 
         assertThrows(RegisterException.class, () -> underTest.register(null));
     }
 
     @Test
-    void login_itShouldReturn2xxWhenInputIsValid() {
+    void loginShouldReturn2xxWhenInputIsValid() {
         final AuthenticationRequestDto inputDto = new AuthenticationRequestDto("dummyUsername", "dummyPwd");
         final AccountDto accountDto = new AccountDto("dummyUsername", "dummyToken");
         when(authenticationServiceMocked.login(any())).thenReturn(accountDto);
@@ -60,7 +60,7 @@ public class AuthenticationControllerTest {
     }
 
     @Test
-    void login_itShouldThrowAnExceptionWhenAnExceptionOccursInService() {
+    void loginShouldThrowAnExceptionWhenAnExceptionOccursInService() {
         when(authenticationServiceMocked.login(any())).thenThrow(LoginException.class);
 
         assertThrows(LoginException.class, () -> underTest.login(null));

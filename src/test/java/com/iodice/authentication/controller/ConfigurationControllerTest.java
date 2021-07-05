@@ -24,7 +24,7 @@ class ConfigurationControllerTest {
     }
 
     @Test
-    void get_itShouldReturn2xxWhenInputIsValid() {
+    void getConfigurationShouldReturn2xxWhenInputIsValid() {
         final String username = "dummyUsername";
         final ConfigurationResponseDto configurationResponseMockedDto = new ConfigurationResponseDto("dummyUsername", "dummyDescription", "dummyPreferences");
         when(configurationService.getConfiguration(any())).thenReturn(configurationResponseMockedDto);
@@ -38,14 +38,14 @@ class ConfigurationControllerTest {
     }
 
     @Test
-    void get_itShouldThrowAnExceptionWhenAnExceptionOccursInService() {
+    void getConfigurationShouldThrowAnExceptionWhenAnExceptionOccursInService() {
         when(configurationService.getConfiguration(any())).thenThrow(ConfigurationException.class);
 
         assertThrows(ConfigurationException.class, () -> underTest.getConfiguration(null));
     }
 
     @Test
-    void save_itShouldReturn2xxWhenInputIsValid() {
+    void saveConfigurationShouldReturn2xxWhenInputIsValid() {
         final ConfigurationRequestDto inputDto = new ConfigurationRequestDto("dummyUsername", "dummyDescription", "dummyPreferences");
         final ConfigurationResponseDto configurationResponseMockedDto = new ConfigurationResponseDto("dummyUsername", "dummyDescription", "dummyPreferences");
         when(configurationService.saveConfiguration(any())).thenReturn(configurationResponseMockedDto);
@@ -59,7 +59,7 @@ class ConfigurationControllerTest {
     }
 
     @Test
-    void save_itShouldThrowAnExceptionWhenAnExceptionOccursInService() {
+    void saveConfigurationShouldThrowAnExceptionWhenAnExceptionOccursInService() {
         when(configurationService.saveConfiguration(any())).thenThrow(ConfigurationException.class);
 
         assertThrows(ConfigurationException.class, () -> underTest.saveConfiguration(null));
