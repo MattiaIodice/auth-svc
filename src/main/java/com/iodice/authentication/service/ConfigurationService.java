@@ -5,6 +5,7 @@ import com.iodice.authentication.model.document.ConfigurationDocument;
 import com.iodice.authentication.model.dto.ConfigurationRequestDto;
 import com.iodice.authentication.model.dto.ConfigurationResponseDto;
 import com.iodice.authentication.repository.ConfigurationRepository;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -26,16 +27,18 @@ public class ConfigurationService {
      * @param username Username
      * @return Account configuration
      */
-    public ConfigurationResponseDto getConfiguration(final String username) throws ConfigurationException {
-        final Optional<ConfigurationDocument> documentOptional = configurationRepository.findById(username);
+    public ConfigurationResponseDto getConfiguration(@NonNull final String username) throws ConfigurationException {
+        if (username.isEmpty())
+            throw new IllegalArgumentException("Username cannot be empty");
 
+        final Optional<ConfigurationDocument> documentOptional = configurationRepository.findById(username);
         if (!documentOptional.isPresent()) {
-            throw new ConfigurationException("There is no document for username [" + username + "]");
+            throw new ConfigurationException("There is no configuration for username [" + username + "]");
         }
 
-        final ConfigurationDocument document = documentOptional.get();
+        final ConfigurationDocument configuration = documentOptional.get();
 
-        return new ConfigurationResponseDto(username, document.getDescription(), document.getPreferences());
+        return new ConfigurationResponseDto(username, configuration.getDescription(), configuration.getPreferences());
     }
 
     /**
@@ -43,21 +46,17 @@ public class ConfigurationService {
      * @param configurationRequestDto Account configuration
      * @return The created configuration of the user
      */
-    public ConfigurationResponseDto saveConfiguration(final ConfigurationRequestDto configurationRequestDto)
+    public ConfigurationResponseDto saveConfiguration(@NonNull final ConfigurationRequestDto configurationRequestDto)
             throws ConfigurationException {
         final String username = configurationRequestDto.getUsername();
-
-        if (!Optional.ofNullable(username).isPresent()) {
-            throw new ConfigurationException("No username in the request body");
+        if (username == null || username.isEmpty()) {
+            throw new IllegalArgumentException("No username passed in the request body");
         }
 
-        /*if (!username.equals(configurationDocument.getUsername())) {
-            throw new ConfigurationException("The configuration is not related to the input user reading the jwt");
-        }*/
-        ConfigurationDocument document = new ConfigurationDocument(username,
+        ConfigurationDocument configuration = new ConfigurationDocument(username,
                 configurationRequestDto.getDescription(), configurationRequestDto.getPreferences());
-        document = configurationRepository.save(document);
+        configuration = configurationRepository.save(configuration);
 
-        return new ConfigurationResponseDto(username, document.getDescription(), document.getPreferences());
+        return new ConfigurationResponseDto(username, configuration.getDescription(), configuration.getPreferences());
     }
 }

@@ -1,6 +1,5 @@
 package com.iodice.authentication.model.dto;
 
-import lombok.Builder;
 import lombok.Data;
 
 @Data
