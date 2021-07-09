@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
-public class AuthenticationControllerTest {
+class AuthenticationControllerTest {
     private AuthenticationController underTest;
     private AuthenticationService authenticationServiceMocked;
 

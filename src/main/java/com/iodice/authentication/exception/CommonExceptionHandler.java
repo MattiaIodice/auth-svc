@@ -10,6 +10,12 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @Slf4j
 public class CommonExceptionHandler {
 
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<?> handleIllegalArgumentException(final IllegalArgumentException ex) {
+        log.error("A bad request from client: ", ex);
+        return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+    }
+
     @ExceptionHandler(RegisterException.class)
     public ResponseEntity<?> handleRegisterException(final RegisterException ex) {
         log.error("An exception occurred during register: ", ex);
