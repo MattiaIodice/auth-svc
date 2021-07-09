@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.function.Function;
 
 /**
- * JWT service.
+ * JWT utility service.
  * @author Mattia Iodice
  * @version 1.0.0
  */
@@ -30,18 +30,9 @@ public class JwtUtilService {
     }
 
     /**
-     * Extract expiration date by JWT.
-     * @param token JWT
-     * @return Date
-     */
-    public Date extractExpiration(String token) {
-        return extractClaim(token, Claims::getExpiration);
-    }
-
-    /**
      * Generate token by username.
-     * @param userDetails
-     * @return
+     * @param username - Username
+     * @return JWT
      */
     public String generateToken(String username) {
         Map<String, Object> claims = new HashMap<>();
@@ -52,11 +43,20 @@ public class JwtUtilService {
      * Valid JWT username and username.
      * @param token JWT
      * @param userDetails Username
-     * @return True if it is the same username, otherwise false
+     * @return If usernames are equals true, otherwise false
      */
     public Boolean validateToken(String token, UserDetails userDetails) {
         final String username = extractUsername(token);
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+    }
+
+    /**
+     * Extract expiration date by JWT.
+     * @param token JWT
+     * @return Expiration date
+     */
+    private Date extractExpiration(String token) {
+        return extractClaim(token, Claims::getExpiration);
     }
 
     private <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {

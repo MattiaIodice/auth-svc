@@ -3,6 +3,7 @@ package com.iodice.authentication.service;
 import com.iodice.authentication.model.document.ConfigurationDocument;
 import com.iodice.authentication.model.dto.ConfigurationResponseDto;
 import com.iodice.authentication.repository.ConfigurationRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.Optional;
@@ -15,6 +16,7 @@ class ConfigurationServiceTest {
     private ConfigurationService underTest;
     private ConfigurationRepository configurationRepository;
 
+    @BeforeEach
     public void setUp() {
         configurationRepository = mock(ConfigurationRepository.class);
         underTest = new ConfigurationService(configurationRepository);

@@ -2,7 +2,6 @@ package com.iodice.authentication.filter;
 
 import com.iodice.authentication.service.AuthUserDetailsService;
 import com.iodice.authentication.service.JwtUtilService;
-import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,8 +41,8 @@ public class JwtFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain)
             throws ServletException, IOException {
-        String username = null;
-        String jwt = null;
+        String username = "";
+        String jwt = "";
 
         // Get token and username
         final String authorizationHeader = request.getHeader("Authorization");
@@ -52,9 +51,8 @@ public class JwtFilter extends OncePerRequestFilter {
             username = jwtUtilService.extractUsername(jwt);
         }
 
-        if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
-            UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
-            log.debug("Dentro filtro");
+        if (!username.isEmpty() && SecurityContextHolder.getContext().getAuthentication() == null) {
+            final UserDetails userDetails = this.userDetailsService.loadUserByUsername(username);
             if (jwtUtilService.validateToken(jwt, userDetails)) {
                 UsernamePasswordAuthenticationToken usernamePasswordAuthenticationToken =
                         new UsernamePasswordAuthenticationToken(userDetails, null, userDetails.getAuthorities());
