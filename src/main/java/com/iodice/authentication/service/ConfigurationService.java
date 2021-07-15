@@ -57,6 +57,6 @@ public class ConfigurationService {
                 configurationRequestDto.getDescription(), configurationRequestDto.getPreferences());
         configuration = configurationRepository.save(configuration);
 
-        return new ConfigurationResponseDto(username, configuration.getDescription(), configuration.getPreferences());
+        return new ConfigurationResponseDto(configuration.getUsername(), configuration.getDescription(), configuration.getPreferences());
     }
 }
