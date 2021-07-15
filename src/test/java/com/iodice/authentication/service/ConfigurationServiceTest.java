@@ -1,5 +1,6 @@
 package com.iodice.authentication.service;
 
+import com.iodice.authentication.exception.ConfigurationException;
 import com.iodice.authentication.model.document.ConfigurationDocument;
 import com.iodice.authentication.model.dto.ConfigurationRequestDto;
 import com.iodice.authentication.model.dto.ConfigurationResponseDto;
@@ -44,9 +45,22 @@ class ConfigurationServiceTest {
     }
 
     @Test
-    void getConfigurationShouldThrowAnExceptionWhenUsernameIsEmpty() {
+    void getConfigurationShouldThrowAnIllegalArgumentExceptionWhenUsernameIsEmpty() {
         final String username = "";
         assertThrows(IllegalArgumentException.class,  () -> underTest.getConfiguration(username));
+    }
+
+    @Test
+    void getConfigurationShouldThrowAnIllegalArgumentExceptionWhenUsernameIsNull() {
+        final String username = null;
+        assertThrows(IllegalArgumentException.class,  () -> underTest.getConfiguration(username));
+    }
+
+    @Test
+    void getConfigurationShouldThrowAConfigurationExceptionWhenConfigurationNotFound() {
+        final String username = "UsernameExample";
+        when(configurationRepository.findById(username)).thenReturn(Optional.empty());
+        assertThrows(ConfigurationException.class,  () -> underTest.getConfiguration(username));
     }
 
     @Test

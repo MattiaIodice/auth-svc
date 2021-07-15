@@ -27,8 +27,8 @@ public class ConfigurationService {
      * @param username Username
      * @return Account configuration
      */
-    public ConfigurationResponseDto getConfiguration(@NonNull final String username) throws ConfigurationException {
-        if (username.isEmpty())
+    public ConfigurationResponseDto getConfiguration(final String username) throws ConfigurationException {
+        if (username == null || username.isEmpty())
             throw new IllegalArgumentException("Username cannot be empty");
 
         final Optional<ConfigurationDocument> documentOptional = configurationRepository.findById(username);
@@ -46,7 +46,7 @@ public class ConfigurationService {
      * @param configurationRequestDto Account configuration
      * @return The created configuration of the user
      */
-    public ConfigurationResponseDto saveConfiguration(@NonNull final ConfigurationRequestDto configurationRequestDto)
+    public ConfigurationResponseDto saveConfiguration(final ConfigurationRequestDto configurationRequestDto)
             throws ConfigurationException {
         final String username = configurationRequestDto.getUsername();
         if (username == null || username.isEmpty()) {

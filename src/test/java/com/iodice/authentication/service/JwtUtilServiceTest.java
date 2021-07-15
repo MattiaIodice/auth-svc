@@ -1,6 +1,7 @@
 package com.iodice.authentication.service;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.security.core.userdetails.User;
 
@@ -8,6 +9,7 @@ import java.util.Collections;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Disabled
 class JwtUtilServiceTest {
     private JwtUtilService underTest;
     private String usernameExample;

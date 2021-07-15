@@ -41,7 +41,7 @@ public class AuthenticationService {
      * @param authenticationRequestDto Dto with 'username' and 'plainPassword'
      * @return New user account
      */
-    public AccountDto register(@NonNull final AuthenticationRequestDto authenticationRequestDto) throws AuthException {
+    public AccountDto register(final AuthenticationRequestDto authenticationRequestDto) throws AuthException {
         final String username = authenticationRequestDto.getUsername();
         if (username == null || username.isEmpty())
             throw new IllegalArgumentException("Input username must be specified.");
@@ -74,7 +74,7 @@ public class AuthenticationService {
      * @param authenticationRequestDto Dto with 'username' and 'plainPassword'
      * @return Account with JWT
      */
-    public AccountDto login(@NonNull final AuthenticationRequestDto authenticationRequestDto) {
+    public AccountDto login(final AuthenticationRequestDto authenticationRequestDto) {
         final String username = authenticationRequestDto.getUsername();
         if (username == null || username.isEmpty())
             throw new IllegalArgumentException("Input username must be specified.");

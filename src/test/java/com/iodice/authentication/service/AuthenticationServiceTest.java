@@ -20,36 +20,41 @@ import static org.mockito.Mockito.when;
 public class AuthenticationServiceTest {
     private AuthenticationService underTest;
 
-    private AuthenticationManager authenticationManager;
-    private JwtUtilService jwtUtilService;
-    private PasswordEncoder passwordEncoder;
     private AuthenticationRepository authenticationRepository;
 
-    private String encryptedPasswordMocked;
     private AccountDocument accountDocumentMocked;
-    private Authentication authenticate;
+    private String tokenMocked;
 
     @BeforeEach
     public void setUp() {
-        authenticationManager = mock(AuthenticationManager.class);
-        jwtUtilService = mock(JwtUtilService.class);
-        passwordEncoder = mock(PasswordEncoder.class);
+        // Initialize underTest
+        final AuthenticationManager authenticationManager = mock(AuthenticationManager.class);
+        final JwtUtilService jwtUtilService = mock(JwtUtilService.class);
+        final PasswordEncoder passwordEncoder = mock(PasswordEncoder.class);
         authenticationRepository = mock(AuthenticationRepository.class);
         underTest = new AuthenticationService(authenticationManager, jwtUtilService, passwordEncoder, authenticationRepository);
-        encryptedPasswordMocked = "dummyEncryptedPwd";
+
+        // Mock inner behaviours
+        final String encryptedPasswordMocked = "dummyEncryptedPwd";
+        when(passwordEncoder.encode(any())).thenReturn(encryptedPasswordMocked);
+
         accountDocumentMocked = AccountDocument.builder()
                 .username("dummyUsername")
                 .password(encryptedPasswordMocked)
                 .build();
-        authenticate = new UsernamePasswordAuthenticationToken("dummyUsername", "dummyPwd");
+        when(authenticationRepository.save(any())).thenReturn(accountDocumentMocked);
+
+        final Authentication authenticateMocked = new UsernamePasswordAuthenticationToken("UsernameExample", "PwdExample");
+        when(authenticationManager.authenticate(any())).thenReturn(authenticateMocked);
+
+        tokenMocked = "TokenExample";
+        when(jwtUtilService.generateToken(any())).thenReturn(tokenMocked);
     }
 
     @Test
     void registerShouldReturnACorrectAccountWhenInputIsValid() {
-        final AuthenticationRequestDto inputDto = new AuthenticationRequestDto("dummyUsername", "dummyPwd");
-        when(passwordEncoder.encode(any())).thenReturn(encryptedPasswordMocked);
+        final AuthenticationRequestDto inputDto = new AuthenticationRequestDto("UsernameExample", "PwdExample");
         when(authenticationRepository.existsByUsername(any())).thenReturn(false);
-        when(authenticationRepository.save(any())).thenReturn(accountDocumentMocked);
 
         final AccountDto actualOutput = underTest.register(inputDto);
 
@@ -59,65 +64,62 @@ public class AuthenticationServiceTest {
     }
 
     @Test
-    void registerShouldReturnAnExceptionWhenUsernameIsEmpty() {
-        final AuthenticationRequestDto inputDto = new AuthenticationRequestDto("", "dummyPwd");
-        when(passwordEncoder.encode(any())).thenReturn(encryptedPasswordMocked);
-        when(authenticationRepository.existsByUsername(any())).thenReturn(false);
-        when(authenticationRepository.save(any())).thenReturn(accountDocumentMocked);
+    void registerShouldReturnAnIllegaleArgumentExceptionWhenUsernameIsNull() {
+        final AuthenticationRequestDto inputDto = new AuthenticationRequestDto(null, "PwdExample");
 
         assertThrows(IllegalArgumentException.class, () -> underTest.register(inputDto));
     }
 
     @Test
-    void registerShouldReturnAnExceptionWhenPwdIsEmpty() {
-        final AuthenticationRequestDto inputDto = new AuthenticationRequestDto("dummyUsername", "");
-        when(passwordEncoder.encode(any())).thenReturn(encryptedPasswordMocked);
-        when(authenticationRepository.existsByUsername(any())).thenReturn(false);
-        when(authenticationRepository.save(any())).thenReturn(accountDocumentMocked);
+    void registerShouldReturnAnIllegalArgumentExceptionWhenUsernameIsEmpty() {
+        final AuthenticationRequestDto inputDto = new AuthenticationRequestDto("", "PwdExample");
+
+        assertThrows(IllegalArgumentException.class, () -> underTest.register(inputDto));
+    }
+
+    @Test
+    void registerShouldReturnAnIllegalArgumentExceptionWhenPwdIsNull() {
+        final AuthenticationRequestDto inputDto = new AuthenticationRequestDto("UsernameExample", null);
+
+        assertThrows(IllegalArgumentException.class, () -> underTest.register(inputDto));
+    }
+
+    @Test
+    void registerShouldReturnAnIllegalArgumentExceptionWhenPwdIsEmpty() {
+        final AuthenticationRequestDto inputDto = new AuthenticationRequestDto("UsernameExample", "");
 
         assertThrows(IllegalArgumentException.class, () -> underTest.register(inputDto));
     }
 
     @Test
     void registerShouldReturnAnExceptionWhenAccountAlreadyExist() {
-        final AuthenticationRequestDto inputDto = new AuthenticationRequestDto("dummyUsername", "dummyPwd");
-        when(passwordEncoder.encode(any())).thenReturn(encryptedPasswordMocked);
+        final AuthenticationRequestDto inputDto = new AuthenticationRequestDto("UsernameExample", "PwdExample");
         when(authenticationRepository.existsByUsername(any())).thenReturn(true);
-        when(authenticationRepository.save(any())).thenReturn(accountDocumentMocked);
 
         assertThrows(RegisterException.class, () -> underTest.register(inputDto));
     }
 
     @Test
     void loginShouldReturnACorrectResponseWhenInputIsValid() {
-        final AuthenticationRequestDto inputDto = new AuthenticationRequestDto("dummyUsername", "dummyPwd");
-        when(authenticationManager.authenticate(any())).thenReturn(authenticate);
-        final String token = "dummyToken";
-        when(jwtUtilService.generateToken(any())).thenReturn(token);
+        final AuthenticationRequestDto inputDto = new AuthenticationRequestDto("UsernameExample", "PwdExample");
 
         final AccountDto actualOutput = underTest.login(inputDto);
 
         assertNotNull(actualOutput);
         assertEquals(actualOutput.getUsername(), inputDto.getUsername());
-        assertEquals(actualOutput.getAuthenticationToken(), token);
+        assertEquals(actualOutput.getAuthenticationToken(), tokenMocked);
     }
 
     @Test
     void loginShouldReturnAnExceptionWhenUsernameIsEmpty() {
-        final AuthenticationRequestDto inputDto = new AuthenticationRequestDto("", "dummyPwd");
-        when(authenticationManager.authenticate(any())).thenReturn(authenticate);
-        final String token = "dummyToken";
-        when(jwtUtilService.generateToken(any())).thenReturn(token);
+        final AuthenticationRequestDto inputDto = new AuthenticationRequestDto("", "PwdExample");
 
         assertThrows(IllegalArgumentException.class, () -> underTest.login(inputDto));
     }
 
     @Test
     void loginShouldReturnAnExceptionWhenPwdIsEmpty() {
-        final AuthenticationRequestDto inputDto = new AuthenticationRequestDto("dummyUsername", "");
-        when(authenticationManager.authenticate(any())).thenReturn(authenticate);
-        final String token = "dummyToken";
-        when(jwtUtilService.generateToken(any())).thenReturn(token);
+        final AuthenticationRequestDto inputDto = new AuthenticationRequestDto("UsernameExample", "");
 
         assertThrows(IllegalArgumentException.class, () -> underTest.login(inputDto));
     }
