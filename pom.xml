@@ -132,7 +132,6 @@
 					<excludes>
 						<exclude>com/iodice/authentication/model/**/*</exclude>
 						<exclude>com/iodice/authentication/configuration/**/*</exclude>
-						<exclude>com/iodice/authentication/AuthApplication</exclude>
 					</excludes>
 				</configuration>
 				<executions>

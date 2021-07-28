@@ -7,6 +7,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 public class AuthApplicationTest {
 
     @Test
-    public void loadContext() {
+    public void loadContext() { }
+
+    @Test
+    public void testMain() {
+        AuthApplication.main(new String[]{});
     }
 }
