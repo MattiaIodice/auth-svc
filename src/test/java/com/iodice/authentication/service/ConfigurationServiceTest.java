@@ -1,6 +1,6 @@
 package com.iodice.authentication.service;
 
-import com.iodice.authentication.exception.ConfigurationException;
+import com.iodice.authentication.model.exception.ConfigurationException;
 import com.iodice.authentication.model.document.ConfigurationDocument;
 import com.iodice.authentication.model.dto.ConfigurationRequestDto;
 import com.iodice.authentication.model.dto.ConfigurationResponseDto;
@@ -28,7 +28,7 @@ class ConfigurationServiceTest {
     }
 
     @Test
-    void getConfigurationShouldReturnAConfigurationWhenInputIsValid() {
+    void getConfigurationShouldReturnACorrectConfigurationWhenInputIsValid() {
         final String username = "UsernameExample";
         final Optional<ConfigurationDocument> documentOptional = Optional.of(
                 new ConfigurationDocument(username, "DescriptionExample", "PreferencesExample")
@@ -76,7 +76,14 @@ class ConfigurationServiceTest {
     }
 
     @Test
-    void saveConfigurationShouldThrowAnExceptionWhenUsernameIsEmpty() {
+    void saveConfigurationShouldThrowAnIllegalArgumentExceptionWhenUsernameIsNull() {
+        final ConfigurationRequestDto inputDto = new ConfigurationRequestDto(null, "descriptionExample", "preferencesExample");
+
+        assertThrows(IllegalArgumentException.class, () -> underTest.saveConfiguration(inputDto));
+    }
+
+    @Test
+    void saveConfigurationShouldThrowAnIllegalArgumentExceptionWhenUsernameIsEmpty() {
         final ConfigurationRequestDto inputDto = new ConfigurationRequestDto("", "descriptionExample", "preferencesExample");
 
         assertThrows(IllegalArgumentException.class, () -> underTest.saveConfiguration(inputDto));

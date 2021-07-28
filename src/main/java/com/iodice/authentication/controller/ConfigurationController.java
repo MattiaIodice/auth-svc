@@ -1,6 +1,6 @@
 package com.iodice.authentication.controller;
 
-import com.iodice.authentication.exception.ConfigurationException;
+import com.iodice.authentication.model.exception.ConfigurationException;
 import com.iodice.authentication.model.dto.ConfigurationRequestDto;
 import com.iodice.authentication.model.dto.ConfigurationResponseDto;
 import com.iodice.authentication.service.ConfigurationService;
@@ -37,7 +37,7 @@ public class ConfigurationController {
 
     /**
      * Create an account configuration API.
-     * @param configurationDocument Body - Account configuration (w/ username)
+     * @param configurationRequestDto Body - Account configuration (w/ username)
      * @return Created account configuration
      */
     @PostMapping()

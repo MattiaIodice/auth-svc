@@ -1,5 +1,8 @@
-package com.iodice.authentication.exception;
+package com.iodice.authentication.handler;
 
+import com.iodice.authentication.model.exception.ConfigurationException;
+import com.iodice.authentication.model.exception.LoginException;
+import com.iodice.authentication.model.exception.RegisterException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

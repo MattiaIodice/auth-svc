@@ -1,4 +1,4 @@
-package com.iodice.authentication.exception;
+package com.iodice.authentication.model.exception;
 
 public class RegisterException extends AuthException {
 

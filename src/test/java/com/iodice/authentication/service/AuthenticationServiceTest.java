@@ -1,6 +1,6 @@
 package com.iodice.authentication.service;
 
-import com.iodice.authentication.exception.RegisterException;
+import com.iodice.authentication.model.exception.RegisterException;
 import com.iodice.authentication.model.document.AccountDocument;
 import com.iodice.authentication.model.dto.AccountDto;
 import com.iodice.authentication.model.dto.AuthenticationRequestDto;
@@ -100,7 +100,7 @@ public class AuthenticationServiceTest {
     }
 
     @Test
-    void loginShouldReturnACorrectResponseWhenInputIsValid() {
+    void loginShouldReturnACorrectAccountWhenInputIsValid() {
         final AuthenticationRequestDto inputDto = new AuthenticationRequestDto("UsernameExample", "PwdExample");
 
         final AccountDto actualOutput = underTest.login(inputDto);
@@ -111,8 +111,22 @@ public class AuthenticationServiceTest {
     }
 
     @Test
+    void loginShouldReturnAnExceptionWhenUsernameIsNull() {
+        final AuthenticationRequestDto inputDto = new AuthenticationRequestDto(null, "PwdExample");
+
+        assertThrows(IllegalArgumentException.class, () -> underTest.login(inputDto));
+    }
+
+    @Test
     void loginShouldReturnAnExceptionWhenUsernameIsEmpty() {
         final AuthenticationRequestDto inputDto = new AuthenticationRequestDto("", "PwdExample");
+
+        assertThrows(IllegalArgumentException.class, () -> underTest.login(inputDto));
+    }
+
+    @Test
+    void loginShouldReturnAnExceptionWhenPwdIsNull() {
+        final AuthenticationRequestDto inputDto = new AuthenticationRequestDto("UsernameExample", null);
 
         assertThrows(IllegalArgumentException.class, () -> underTest.login(inputDto));
     }

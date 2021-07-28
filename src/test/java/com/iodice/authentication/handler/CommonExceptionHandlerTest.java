@@ -1,5 +1,8 @@
-package com.iodice.authentication.exception;
+package com.iodice.authentication.handler;
 
+import com.iodice.authentication.model.exception.ConfigurationException;
+import com.iodice.authentication.model.exception.LoginException;
+import com.iodice.authentication.model.exception.RegisterException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpStatus;

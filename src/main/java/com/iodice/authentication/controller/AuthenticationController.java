@@ -1,7 +1,7 @@
 package com.iodice.authentication.controller;
 
-import com.iodice.authentication.exception.LoginException;
-import com.iodice.authentication.exception.RegisterException;
+import com.iodice.authentication.model.exception.LoginException;
+import com.iodice.authentication.model.exception.RegisterException;
 import com.iodice.authentication.model.dto.AccountDto;
 import com.iodice.authentication.model.dto.AuthenticationRequestDto;
 import com.iodice.authentication.service.AuthenticationService;

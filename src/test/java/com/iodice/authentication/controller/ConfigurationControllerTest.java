@@ -1,6 +1,6 @@
 package com.iodice.authentication.controller;
 
-import com.iodice.authentication.exception.ConfigurationException;
+import com.iodice.authentication.model.exception.ConfigurationException;
 import com.iodice.authentication.model.dto.ConfigurationRequestDto;
 import com.iodice.authentication.model.dto.ConfigurationResponseDto;
 import com.iodice.authentication.service.ConfigurationService;

@@ -1,12 +1,11 @@
 package com.iodice.authentication.service;
 
-import com.iodice.authentication.exception.AuthException;
-import com.iodice.authentication.exception.RegisterException;
+import com.iodice.authentication.model.exception.AuthException;
+import com.iodice.authentication.model.exception.RegisterException;
 import com.iodice.authentication.model.document.AccountDocument;
 import com.iodice.authentication.model.dto.AccountDto;
 import com.iodice.authentication.model.dto.AuthenticationRequestDto;
 import com.iodice.authentication.repository.AuthenticationRepository;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

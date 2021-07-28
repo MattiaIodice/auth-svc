@@ -1,11 +1,10 @@
 package com.iodice.authentication.service;
 
-import com.iodice.authentication.exception.ConfigurationException;
+import com.iodice.authentication.model.exception.ConfigurationException;
 import com.iodice.authentication.model.document.ConfigurationDocument;
 import com.iodice.authentication.model.dto.ConfigurationRequestDto;
 import com.iodice.authentication.model.dto.ConfigurationResponseDto;
 import com.iodice.authentication.repository.ConfigurationRepository;
-import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
