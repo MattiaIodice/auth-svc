@@ -2,7 +2,7 @@
 ![JaCoCo 100% coverage](https://img.shields.io/badge/coverage-100%25-brightgreen)
 
 ## Description
-"auth-svc" is a lightweight authentication and authorization microservice written in [Spring](https://spring.io/) using [Java 8](https://www.oracle.com/java/technologies/java8.html).
+"auth-svc" is a lightweight authentication and authorization microservice written in [Java 8](https://www.oracle.com/java/technologies/java8.html) using [Spring](https://spring.io/).
 
 Its goal is to expose some RESTful APIs to provide a [JSON Web Token](https://jwt.io/) (JWT) sign-up and sign-in components. There are two groups of APIs: Authentication and Configuration.
 
